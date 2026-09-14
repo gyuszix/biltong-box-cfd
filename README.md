@@ -13,6 +13,7 @@ experiments/
   02-outlet-alignment/      vents opposite the fan vs on the side walls
   03-bigger-vents/          15mm vs 20mm vent holes
   04-fan-short-face/        fan on a short end face vs fan on the long wall
+  05-rod-orientation/       rods lengthwise vs crosswise (exp 4's fan layout, rods rotated 90deg)
   (future experiments land here as siblings)
 ```
 
@@ -29,7 +30,10 @@ the long one (experiment 4), enlarging the vents didn't help speed while
 cutting the box's protective internal overpressure by more than half
 (experiment 3), and moving the fan to a short end face lost 16% of rod
 airflow for no compensating benefit (experiment 4) - on top of that mount
-position being physically awkward on the real tote anyway.
+position being physically awkward on the real tote anyway. Rod orientation
+(experiment 5) also stays unchanged: rotating the rods to run lengthwise
+raised average rod-surface speed but made evenness worse both along each
+rod and across the box, a worse trade than it looked at first glance.
 
 ![side_mount (the winning config, left) vs lid_mount, streamlines orbiting](experiments/01-fan-mount-placement/results/streamlines.gif)
 
@@ -72,3 +76,13 @@ comparison GIF.)*
   along the other axis. Also moot in practice: that fan position was
   already ruled out in experiment 1 for not sitting flush on the real
   tote.**
+- [`05-rod-orientation`](experiments/05-rod-orientation/README.md) - rods
+  lengthwise (parallel to the flow) vs crosswise (perpendicular, every
+  prior experiment's default), same fan/vent layout as exp 4's end_mount.
+  **Finding: mixed, not a clean win - average rod-surface speed rises 15%
+  (0.60 -> 0.69 m/s), but the minimum surface speed drops ~65%, evenness
+  along each rod gets 20% worse, and the whole-cross-section mean/
+  uniformity both get worse too. Root cause: crosswise rods are forced
+  through the jet's hot core, while lengthwise rods end up flanking it
+  instead - partly a side effect of reusing the same spacing convention
+  across a different axis, not a clean test of orientation alone.**

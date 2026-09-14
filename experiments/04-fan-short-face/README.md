@@ -105,8 +105,10 @@ can't render the interactive viewer):
 ```
 ./make_gif.sh                      # writes results/streamlines.gif
 ./make_gif.sh rods                 # orbit the rod-height slice instead
-./make_gif.sh slice --frames 90 --fps 20   # smoother, bigger file
+./make_gif.sh slice --frames 90 --fps 15   # faster playback, bigger file
 ```
+Default is 7.5fps (deliberately slow, easier to follow the rotation);
+pass `--fps` to override.
 
 ## Files
 

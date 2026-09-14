@@ -8,7 +8,7 @@ so this is what you'd embed there instead.
 Usage:
     ./make_gif.sh                            # writes results/streamlines.gif
     ./make_gif.sh rods                       # orbit the rod-height slice instead
-    ./make_gif.sh slice --frames 90 --fps 20 --degrees 360
+    ./make_gif.sh slice --frames 90 --fps 15 --degrees 360   # faster playback
 """
 
 import argparse
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     ap.add_argument("view", nargs="?", choices=list(VIEWS), default="streamlines",
                      help="which comparison view to orbit (default: streamlines)")
     ap.add_argument("--frames", type=int, default=60, help="number of frames in the loop")
-    ap.add_argument("--fps", type=int, default=15, help="playback frames per second")
+    ap.add_argument("--fps", type=float, default=7.5, help="playback frames per second (default is half-speed/easier to follow)")
     ap.add_argument("--degrees", type=int, default=360, help="total rotation (360 = full loop)")
     args = ap.parse_args()
 

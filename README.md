@@ -31,14 +31,21 @@ cutting the box's protective internal overpressure by more than half
 airflow for no compensating benefit (experiment 4) - on top of that mount
 position being physically awkward on the real tote anyway.
 
+![side_mount (the winning config, left) vs lid_mount, streamlines orbiting](experiments/01-fan-mount-placement/results/streamlines.gif)
+
+*(from experiment 1 - side_mount, left, is the configuration above.
+Every later experiment tested something else against this same baseline
+and it kept winning; see each experiment's own README for its own
+comparison GIF.)*
+
 ## Shared setup (once, for any experiment)
 
 - Docker (for OpenFOAM, via the `opencfd/openfoam-default` image - pulled
   automatically on first `run_cfd.sh` run)
-- Python venv at `.venv/` (pyvista, vtk, numpy, matplotlib, pandas):
+- Python venv at `.venv/` (pyvista, vtk, numpy, matplotlib, pandas, imageio):
   ```
   python3 -m venv .venv
-  .venv/bin/pip install pyvista vtk numpy matplotlib pandas
+  .venv/bin/pip install pyvista vtk numpy matplotlib pandas imageio
   ```
 - Blender (`brew install --cask blender`) for the geometry generator scripts
 

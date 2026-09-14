@@ -1,0 +1,5 @@
+variant,rod,mean_speed,min_speed,max_speed,std_speed
+long_face_vents,1,0.881,0.547,1.338,0.243
+long_face_vents,2,1.164,0.404,1.685,0.385
+long_vents_lengthwise,1,1.078,0.401,1.415,0.323
+long_vents_lengthwise,2,0.921,0.540,1.729,0.333

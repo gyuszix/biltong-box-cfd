@@ -22,38 +22,62 @@ experiments/
 Each experiment folder has its own README with what it tests, the findings,
 and exactly how to reproduce/view it - start there.
 
-## Best result across all 7 experiments (8 configurations simulated)
+## Recommended configuration: `long_vents_lengthwise` (experiment 7)
 
-`long_face_vents` (experiment 6) is the strongest configuration simulated
-so far, by a clear margin on every metric that matters: fan on a short end
-face, rods crosswise (unchanged from experiment 4), 12 vents split 6-and-6
-across both long side faces instead of consolidated opposite the fan.
+Fan on a short end face, rods **lengthwise** at two y positions, 12 vents
+split 6-and-6 across both long side faces. Recommended for the actual
+build target - meat hung as multiple hooks spaced along each rod, the
+normal way to load a biltong box - even though it's not the top scorer on
+pooled metrics; see "why lengthwise, not crosswise" below.
 
-| metric | long_face_vents (exp 6, the winner) | side_mount (best *buildable* layout, exp 1) |
+| metric | long_vents_lengthwise (exp 7, recommended) | side_mount (best *buildable* layout, exp 1) |
 |---|---|---|
 | mean speed at rod/meat surface | **1.01 m/s** | 0.72 m/s |
-| mean speed, full cross-section at rod height | **0.82 m/s** | 0.77 m/s |
-| uniformity (CV, lower = more even) | **0.60** | 0.89 |
+| mean speed, full cross-section at rod height | 0.74 m/s | 0.77 m/s |
+| uniformity (CV, lower = more even) | **0.70** | 0.89 |
 | internal gauge pressure (mean) | 17.7 Pa | 15.9 Pa |
 
-![long_face_vents (left) vs end_mount, streamlines orbiting](experiments/06-vent-long-faces/results/streamlines.gif)
+![rods_lengthwise (left) vs long_vents_lengthwise, streamlines orbiting](experiments/07-long-vents-lengthwise/results/streamlines.gif)
 
-*(from experiment 6 - `long_face_vents`, left, is the configuration above;
-`end_mount`, right, is its own baseline. See the full ranking table below
-for how every configuration simulated in this project stacks up.)*
+*(from experiment 7 - `long_vents_lengthwise`, right, is the recommended
+configuration; `rods_lengthwise`, left, is its own baseline. See the full
+ranking table below for how every configuration simulated in this project
+stacks up on pooled metrics.)*
 
-**The catch, and why this isn't simply "the new recommendation":**
-`long_face_vents` inherits its fan position from experiment 4's
-`end_mount` (fan on a short end face) - a mount position experiment 1
-explicitly ruled out for not sitting flush against the real IKEA SAMLA
-tote's moulded short-face depression. It has also never been simulated
-head-to-head against `side_mount` in the same box (they use different
-fan walls entirely), so "beats side_mount's numbers" and "would actually
-beat side_mount if both were compared apples-to-apples on a buildable
-box" aren't quite the same claim yet. Treat this as the strongest result
-the simulations have produced, and `side_mount` as the strongest result
-that's actually buildable today - see "Currently buildable
-recommendation" below.
+### Why lengthwise, not crosswise, once the vents are on the long faces
+
+Experiment 6's `long_face_vents` (identical fan and vents, rods left
+**crosswise**) actually wins on every *pooled* metric - higher mean speed,
+higher full cross-section mean, better whole-box uniformity. But pooled
+metrics average away *where along a rod* the slow spots are, and that's
+exactly what matters once you're hanging several meat strips as hooks
+spaced along the same rod:
+
+![Speed profile along each rod, crosswise (exp 6) vs lengthwise (exp 7)](experiments/07-long-vents-lengthwise/results/rod_profile_along_length.png)
+
+- **Crosswise rods (exp 6):** both rods dip to their slowest point right
+  at the box's centerline and rise toward *both* side walls (where the
+  vents now sit) - a dead zone in the **middle of every rod**, exactly
+  where hooks are most naturally spaced, no matter how you load them.
+- **Lengthwise rods (exp 7):** both rods are slow only over roughly the
+  first 15-20% of their length nearest the fan, then hold a fairly flat,
+  high plateau across the rest - a dead zone confined to **one
+  predictable end**, avoidable by just not hanging anything there.
+
+A dead zone you can plan hook placement around beats a dead zone baked
+into the middle of every rod - see experiment 7's README for the full
+numbers and caveats behind this call.
+
+**Shared caveat with experiment 6:** both configurations inherit their fan
+position from experiment 4's `end_mount` (fan on a short end face) - a
+mount position experiment 1 explicitly ruled out for not sitting flush
+against the real IKEA SAMLA tote's moulded short-face depression. Neither
+has been simulated head-to-head against `side_mount` in the same box
+(different fan walls entirely), so beating `side_mount`'s numbers isn't
+quite the same claim as "would win an apples-to-apples comparison on a
+buildable box." If the short-face mounting problem doesn't get solved,
+`side_mount` (below) is the strongest option that's actually buildable
+today.
 
 ## Currently buildable recommendation
 
@@ -75,8 +99,8 @@ glance.
 
 | # | variant | experiment | rod-surface mean | full cross-section mean | uniformity (CV) | rod-surface min | pressure (mean) |
 |---|---|---|---|---|---|---|---|
-| 1 | **long_face_vents** | 6 | **1.01 m/s** | **0.82 m/s** | **0.60** | 0.072 | 17.7 Pa |
-| 2 | long_vents_lengthwise | 7 | 1.01 m/s | 0.74 m/s | 0.70 | 0.046 | 17.7 Pa |
+| 1 | long_face_vents (best pooled metrics; middle-of-rod dead zone) | 6 | **1.01 m/s** | **0.82 m/s** | **0.60** | 0.072 | 17.7 Pa |
+| 2 | **long_vents_lengthwise (recommended; end-of-rod dead zone)** | 7 | 1.01 m/s | 0.74 m/s | 0.70 | 0.046 | 17.7 Pa |
 | 3 | side_mount | 1 | 0.72 m/s | 0.77 m/s | 0.89 | 0.096 | 15.9 Pa |
 | 4 | rods_lengthwise | 5 | 0.69 m/s | 0.45 m/s | 0.82 | 0.036 | 13.9 Pa |
 | 5 | side_bigvent | 3 | 0.68 m/s | 0.78 m/s | 0.88 | 0.092 | 6.3 Pa |
@@ -86,9 +110,10 @@ glance.
 
 Rows 1 and 2 (both from the "vents on long faces" family) are a
 statistical tie on rod-surface mean speed (1.009 vs 1.012 m/s, well
-within this project's noise floor) - see experiment 7 for why stacking
-lengthwise rods on top of the vent relocation doesn't actually help once
-the flow is already forced to spread sideways to reach those vents.
+within this project's noise floor) - row 2 is recommended anyway because
+of *where* along the rod its slow spots fall, not because it scores
+higher; see "why lengthwise, not crosswise" above and experiment 7's
+README for the full picture.
 
 ## Shared setup (once, for any experiment)
 
@@ -141,17 +166,21 @@ the flow is already forced to spread sideways to reach those vents.
   full-cross-section mean up 60% and more even (CV 0.75 -> 0.60), internal
   overpressure up rather than down. Only the rod-surface minimum gets
   worse (-28%). Same "perpendicular beats aligned" mechanism as
-  experiments 2 and 4, just applied to end_mount's axis. The strongest
-  result simulated in this project so far - see "Best result" above for
-  the buildability caveat on why it isn't simply the new top pick.**
+  experiments 2 and 4, just applied to end_mount's axis. Best pooled
+  metrics of any configuration simulated in this project - see "Recommended
+  configuration" above for why experiment 7 is favored over this one
+  anyway, and the shared buildability caveat both inherit from end_mount.**
 - [`07-long-vents-lengthwise`](experiments/07-long-vents-lengthwise/README.md) -
   experiment 5's lengthwise rods stacked on top of experiment 6's
   long-face vents, compared against exp 5's rods_lengthwise baseline.
   **Finding: still a big win over its own baseline (rod-surface mean up
-  47%, full cross-section up 65%), but stacking the two single-variable
-  wins doesn't beat keeping the rods crosswise - exp 6's long_face_vents
-  still edges it out on full-cross-section mean (0.82 vs 0.74 m/s) and
-  uniformity (0.60 vs 0.70), with the headline rod-surface number a
-  statistical tie between the two. Once the vents are already forced to
-  spread the flow sideways, rod orientation stops being the lever it was
-  in experiment 5.**
+  47%, full cross-section up 65%), and on pooled metrics alone exp 6's
+  long_face_vents (crosswise) still edges it out on full-cross-section
+  mean (0.82 vs 0.74 m/s) and uniformity (0.60 vs 0.70). But a follow-up
+  speed-vs-position-along-rod analysis
+  (`results/rod_profile_along_length.png`) found the two failure modes are
+  shaped very differently: crosswise rods have their dead zone in the
+  *middle* of every rod (unavoidable however you space hooks along it),
+  while lengthwise rods have it confined to *one end* (avoidable). That's
+  why this is the recommended configuration above despite not topping the
+  pooled-metric table.**

@@ -73,14 +73,69 @@ consistently favor long_face_vents (min speed, full cross-section mean,
 uniformity) are each 10%+ gaps, larger than the scatter seen elsewhere in
 this project, so those differences are more likely to be real.
 
-**Recommendation:** if the vent-on-long-faces idea is ever pursued, keep
-the rods crosswise (exp 6's long_face_vents) rather than rotating them to
-lengthwise - the combination tested here doesn't earn its added complexity.
-This also answers the motivating question directly: the two single-variable
-wins do **not** stack into a bigger combined win - once the flow is
-already forced to spread sideways by the vent relocation, rod orientation
-stops mattering much, and if anything crosswise is still very slightly
-better across more metrics.
+**Recommendation (by the aggregate numbers alone):** if the vent-on-long-
+faces idea is ever pursued, keep the rods crosswise (exp 6's
+long_face_vents) rather than rotating them to lengthwise - the combination
+tested here doesn't earn its added complexity on averages, mins, or
+whole-box uniformity. This also answers the motivating question directly:
+the two single-variable wins do **not** stack into a bigger combined win -
+once the flow is already forced to spread sideways by the vent relocation,
+rod orientation stops mattering much, and if anything crosswise is still
+very slightly better across more metrics.
+
+## Follow-up: does that change for meat hung on hooks along the rod?
+
+The metrics above (mean/min/std across the *whole* rod surface, all
+positions pooled together) answer "which layout has more airflow on
+average" but hide *where along a rod* the slow spots are. That matters in
+practice: if you're hanging several meat strips as hooks spaced along the
+same rod, what you actually care about is whether hooks near one end of
+the rod see a very different airflow than hooks near the other end - not
+just the pooled average across the whole rod.
+
+`rod_profile_compare.py` in this folder samples mean speed in rings at 40
+positions along each rod (instead of pooling everything into one number)
+for both this experiment's long_vents_lengthwise and exp 6's
+long_face_vents, and plots speed vs. position along the rod:
+
+![Speed profile along each rod, crosswise (exp 6) vs lengthwise (exp 7)](results/rod_profile_along_length.png)
+
+The shapes are qualitatively different, not just shifted:
+
+- **exp 6 (crosswise rods):** both rods dip to their slowest point right
+  at the box's centerline (y=0, ~0.40-0.55 m/s) and rise toward *both*
+  side walls (~1.5-1.7 m/s), because that's where the vents now sit.
+  Loading hooks evenly along the full length of a crosswise rod puts the
+  worst airflow in the middle third of every rod - wherever you space your
+  hooks, some will land in that dead zone.
+- **exp 7 (lengthwise rods):** both rods start slow near the fan end
+  (~0.40-0.50 m/s over roughly the first 15-20% of the rod's length), then
+  climb to a fairly flat, high plateau (~1.2-1.4 m/s) across most of the
+  remaining length. The cold zone is confined to one predictable end
+  instead of smeared across the middle.
+
+For a rod that's going to carry multiple hooks, exp 7's failure mode is
+avoidable (don't hang anything in roughly the last 15-20% of the rod
+nearest the fan) in a way exp 6's isn't (the dead zone sits exactly where
+hooks are most naturally spaced, no matter how you load the rod).
+
+**Caveats on this follow-up specifically:** the two rods in each variant
+aren't identical to each other (exp 7's rod 1 and rod 2 peak/dip at
+slightly different positions; see `results/rod_profile_stats.csv` for the
+per-rod numbers), so "avoid the last 20% near the fan" is a rough guide,
+not an exact cutoff good to the millimeter. The absolute coldest single
+point is roughly tied between the two variants (~0.40 m/s either way) -
+the difference is in how much of the rod's length is affected by it, not
+that exp 7's worst spot is actually warmer.
+
+**Recommendation (for hook-loaded rods specifically):** exp 7
+(`long_vents_lengthwise`) over exp 6 (`long_face_vents`), despite exp 6
+winning on every pooled metric. A dead zone confined to one end of the rod
+is something you can plan hook placement around; a dead zone in the
+middle of every rod is not. If you're not hanging meat on hooks spread
+along the rod's length - e.g. a single large piece draped over/around the
+rod, closer to what the original "ring around the rod" metric models -
+exp 6 remains the better pick on the numbers.
 
 ## View the results (rendered)
 
@@ -127,11 +182,12 @@ setup_cfd_cases.py         writes OpenFOAM case files (0/, constant/, system/) +
 run_cfd.sh                 blockMesh -> snappyHexMesh -> checkMesh -> simpleFoam, via Docker
 compare_variants.py        metrics + comparison renders -> results/
 compare.sh                 wrapper: runs compare_variants.py with the shared .venv, from anywhere
+rod_profile_compare.py     speed-vs-position-along-rod plot, this experiment vs exp 6 -> results/rod_profile_along_length.png
 view_interactive.py        interactive viewer (reuses compare_variants.py's helpers)
 view.sh                    wrapper: runs view_interactive.py with the shared .venv, from anywhere
 make_gif.py                orbiting-camera GIF export (for GitHub embedding) -> results/*.gif
 make_gif.sh                wrapper: runs make_gif.py with the shared .venv, from anywhere
 stl_out/                   geometry STLs for long_vents_lengthwise (walls/fan/outlet/rods patches)
 case-long-vents-lengthwise/ OpenFOAM case for long_vents_lengthwise (mesh + solution, regenerable)
-results/                   metrics.csv + comparison PNGs
+results/                   metrics.csv + comparison PNGs + rod_profile_along_length.png/csv
 ```

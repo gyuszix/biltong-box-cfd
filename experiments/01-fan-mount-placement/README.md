@@ -67,6 +67,14 @@ from anywhere, no activation or path-remembering needed)
   ```
   Both variants' cameras are linked, so rotating one rotates the other.
   Close a window to move to the next.
+- **Rotating GIF (e.g. for a GitHub README, which can't render the
+  interactive viewer):**
+  ```
+  ./make_gif.sh                      # writes results/streamlines.gif
+  ./make_gif.sh rods                 # orbit the rod-height slice instead
+  ./make_gif.sh slice --frames 90 --fps 20   # smoother, bigger file
+  ```
+  ![Streamlines, side_mount vs lid_mount, orbiting](results/streamlines.gif)
 
 ## Files
 
@@ -78,6 +86,8 @@ compare_variants.py        metrics + comparison renders -> results/
 compare.sh                 wrapper: runs compare_variants.py with the shared .venv, from anywhere
 view_interactive.py        interactive viewer (reuses compare_variants.py's helpers)
 view.sh                    wrapper: runs view_interactive.py with the shared .venv, from anywhere
+make_gif.py                orbiting-camera GIF export (for GitHub embedding) -> results/*.gif
+make_gif.sh                wrapper: runs make_gif.py with the shared .venv, from anywhere
 preview_variant.py         quick color-coded geometry-only preview (no CFD), pre-meshing sanity check
 stl_out/                   geometry STLs per variant (walls/fan/outlet/rods patches)
 case-side-mount/           OpenFOAM case for side_mount (mesh + solution, regenerable)

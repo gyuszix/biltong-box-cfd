@@ -51,3 +51,9 @@ Same pattern as experiment 1: static PNGs in `results/`, or
 ```
 ./view.sh all
 ```
+
+Rotating GIF for embedding in a GitHub README:
+```
+./make_gif.sh
+```
+![Streamlines, side_mount vs side_aligned, orbiting](results/streamlines.gif)

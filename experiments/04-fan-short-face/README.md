@@ -80,6 +80,8 @@ doesn't hold up.
 recirculates through the whole box before escaping; end_mount's forms one
 straight coherent tube from fan to vent with minimal spreading.
 
+![Streamlines, side_mount vs end_mount, orbiting](results/streamlines.gif)
+
 ## Reproduce
 
 ```
@@ -98,6 +100,14 @@ Same pattern as experiment 1: static PNGs in `results/`, or
 ./view.sh all
 ```
 
+To generate a rotating GIF (e.g. for embedding in a GitHub README, which
+can't render the interactive viewer):
+```
+./make_gif.sh                      # writes results/streamlines.gif
+./make_gif.sh rods                 # orbit the rod-height slice instead
+./make_gif.sh slice --frames 90 --fps 20   # smoother, bigger file
+```
+
 ## Files
 
 ```
@@ -108,6 +118,8 @@ compare_variants.py        metrics + comparison renders -> results/
 compare.sh                 wrapper: runs compare_variants.py with the shared .venv, from anywhere
 view_interactive.py        interactive viewer (reuses compare_variants.py's helpers)
 view.sh                    wrapper: runs view_interactive.py with the shared .venv, from anywhere
+make_gif.py                orbiting-camera GIF export (for GitHub embedding) -> results/*.gif
+make_gif.sh                wrapper: runs make_gif.py with the shared .venv, from anywhere
 stl_out/                   geometry STLs for end_mount (walls/fan/outlet/rods patches)
 case-end-mount/            OpenFOAM case for end_mount (mesh + solution, regenerable)
 results/                   metrics.csv + comparison PNGs

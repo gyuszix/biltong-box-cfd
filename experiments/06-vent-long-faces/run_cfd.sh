@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Mesh + solve the long_face_vents variant with OpenFOAM, via Docker.
+#
+# Usage:
+#   ./run_cfd.sh long_face_vents
+#
+# Requires setup_cfd_cases.py to have been run first (creates the case dir
+# and copies in the STL patches). Logs go to log.<step> inside the case dir.
+
+set -euo pipefail
+
+IMAGE="opencfd/openfoam-default:2512"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+VARIANT="${1:-}"
+case "$VARIANT" in
+    long_face_vents) CASE_DIR="case-long-face-vents" ;;
+    *)
+        echo "Usage: $0 <long_face_vents>" >&2
+        exit 1
+        ;;
+esac
+
+if [ ! -d "$ROOT_DIR/$CASE_DIR/system" ]; then
+    echo "ERROR: $CASE_DIR not set up. Run 'python3 setup_cfd_cases.py' first." >&2
+    exit 1
+fi
+
+run_step() {
+    local step="$1"
+    shift
+    echo ">>> [$VARIANT] $step"
+    # NB: the image's entrypoint (/openfoam/run) unconditionally cd's to
+    # $HOME before exec'ing our command, so -w is ignored - cd explicitly
+    # inside the command instead.
+    if ! docker run --rm \
+        -v "$ROOT_DIR":/work \
+        "$IMAGE" \
+        bash -c "set -o pipefail; cd /work/$CASE_DIR && ($* 2>&1 | tee log.$step)"; then
+        echo "!!! $step FAILED for $VARIANT — see $CASE_DIR/log.$step" >&2
+        exit 1
+    fi
+    if grep -q "FOAM FATAL ERROR" "$ROOT_DIR/$CASE_DIR/log.$step"; then
+        echo "!!! $step reported a FOAM FATAL ERROR for $VARIANT — see $CASE_DIR/log.$step" >&2
+        exit 1
+    fi
+}
+
+echo "=== Running CFD for variant: $VARIANT ($CASE_DIR) ==="
+
+run_step blockMesh "blockMesh"
+run_step snappyHexMesh "snappyHexMesh -overwrite"
+run_step checkMesh "checkMesh"
+run_step simpleFoam "simpleFoam"
+
+# empty marker file pyvista's/ParaView's OpenFOAMReader looks for
+touch "$ROOT_DIR/$CASE_DIR/$CASE_DIR.foam"
+
+echo "=== Done: $VARIANT ==="
+echo "Logs in $CASE_DIR/log.{blockMesh,snappyHexMesh,checkMesh,simpleFoam}"

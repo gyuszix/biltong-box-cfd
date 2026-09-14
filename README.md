@@ -14,6 +14,7 @@ experiments/
   03-bigger-vents/          15mm vs 20mm vent holes
   04-fan-short-face/        fan on a short end face vs fan on the long wall
   05-rod-orientation/       rods lengthwise vs crosswise (exp 4's fan layout, rods rotated 90deg)
+  06-vent-long-faces/       vents on both long faces vs the single opposite short face (exp 4's fan layout)
   (future experiments land here as siblings)
 ```
 
@@ -34,6 +35,13 @@ position being physically awkward on the real tote anyway. Rod orientation
 (experiment 5) also stays unchanged: rotating the rods to run lengthwise
 raised average rod-surface speed but made evenness worse both along each
 rod and across the box, a worse trade than it looked at first glance.
+Experiment 6 found a genuinely large improvement *within* the fan-on-
+short-face family - moving end_mount's vents onto both long faces instead
+of the single face opposite the fan raised rod-surface airflow 69% and
+made the whole box more even too - but that's a fix to a layout
+(fan on a short end face) that's still ruled out on its own for not
+mounting flush on the real tote, and it hasn't been tested head-to-head
+against side_mount, so it doesn't change the recommendation above.
 
 ![side_mount (the winning config, left) vs lid_mount, streamlines orbiting](experiments/01-fan-mount-placement/results/streamlines.gif)
 
@@ -86,3 +94,13 @@ comparison GIF.)*
   through the jet's hot core, while lengthwise rods end up flanking it
   instead - partly a side effect of reusing the same spacing convention
   across a different axis, not a clean test of orientation alone.**
+- [`06-vent-long-faces`](experiments/06-vent-long-faces/README.md) - vents
+  split across both long faces vs consolidated on the single short face
+  opposite the fan (exp 4's end_mount layout). **Finding: a decisive,
+  mostly-clean win - rod-surface mean speed up 69% (0.60 -> 1.01 m/s),
+  full-cross-section mean up 60% and more even (CV 0.75 -> 0.60), internal
+  overpressure up rather than down. Only the rod-surface minimum gets
+  worse (-28%). Same "perpendicular beats aligned" mechanism as
+  experiments 2 and 4, just applied to end_mount's axis - but end_mount
+  itself is still not the recommended layout (see above), so this doesn't
+  change the top pick without a future head-to-head against side_mount.**

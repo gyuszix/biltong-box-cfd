@@ -1,0 +1,3 @@
+variant,solved_to_time,rod_surface_speed_mean,rod_surface_speed_min,rod_surface_speed_max,rod_surface_speed_std,rod_height_slice_mean_speed,rod_height_slice_uniformity_cv,fan_inflow_m3s,outlet_outflow_m3s,mass_balance_error_pct,internal_gauge_pressure_pa_mean,internal_gauge_pressure_pa_max
+end_mount,500.0,0.5980525,0.10016238,2.5288424,0.4469916,0.51400095,0.7469352,-0.014245289521404168,0.011603223444660173,18.546945450102477,14.370095,20.69369
+long_face_vents,500.0,1.0119536,0.07166544,3.492686,0.7217022,0.82007986,0.6005274,-0.014245289521404168,0.012213053865293283,14.26601862361142,17.710188,25.188463

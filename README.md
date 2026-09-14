@@ -15,40 +15,80 @@ experiments/
   04-fan-short-face/        fan on a short end face vs fan on the long wall
   05-rod-orientation/       rods lengthwise vs crosswise (exp 4's fan layout, rods rotated 90deg)
   06-vent-long-faces/       vents on both long faces vs the single opposite short face (exp 4's fan layout)
+  07-long-vents-lengthwise/ exp 5's rods + exp 6's vents, combined (fan short face, rods lengthwise, vents on long faces)
   (future experiments land here as siblings)
 ```
 
 Each experiment folder has its own README with what it tests, the findings,
 and exactly how to reproduce/view it - start there.
 
-## Current recommendation
+## Best result across all 7 experiments (8 configurations simulated)
 
-Based on all four experiments so far: **fan on the long side wall, vents
-on both short end faces, 15mm holes** (experiment 1's original side_mount
-layout, unchanged by 2, 3, and 4). Aligning vents with the fan's jet made
-things worse whether the shared axis was the short one (experiment 2) or
-the long one (experiment 4), enlarging the vents didn't help speed while
-cutting the box's protective internal overpressure by more than half
-(experiment 3), and moving the fan to a short end face lost 16% of rod
-airflow for no compensating benefit (experiment 4) - on top of that mount
-position being physically awkward on the real tote anyway. Rod orientation
-(experiment 5) also stays unchanged: rotating the rods to run lengthwise
-raised average rod-surface speed but made evenness worse both along each
-rod and across the box, a worse trade than it looked at first glance.
-Experiment 6 found a genuinely large improvement *within* the fan-on-
-short-face family - moving end_mount's vents onto both long faces instead
-of the single face opposite the fan raised rod-surface airflow 69% and
-made the whole box more even too - but that's a fix to a layout
-(fan on a short end face) that's still ruled out on its own for not
-mounting flush on the real tote, and it hasn't been tested head-to-head
-against side_mount, so it doesn't change the recommendation above.
+`long_face_vents` (experiment 6) is the strongest configuration simulated
+so far, by a clear margin on every metric that matters: fan on a short end
+face, rods crosswise (unchanged from experiment 4), 12 vents split 6-and-6
+across both long side faces instead of consolidated opposite the fan.
 
-![side_mount (the winning config, left) vs lid_mount, streamlines orbiting](experiments/01-fan-mount-placement/results/streamlines.gif)
+| metric | long_face_vents (exp 6, the winner) | side_mount (best *buildable* layout, exp 1) |
+|---|---|---|
+| mean speed at rod/meat surface | **1.01 m/s** | 0.72 m/s |
+| mean speed, full cross-section at rod height | **0.82 m/s** | 0.77 m/s |
+| uniformity (CV, lower = more even) | **0.60** | 0.89 |
+| internal gauge pressure (mean) | 17.7 Pa | 15.9 Pa |
 
-*(from experiment 1 - side_mount, left, is the configuration above.
-Every later experiment tested something else against this same baseline
-and it kept winning; see each experiment's own README for its own
-comparison GIF.)*
+![long_face_vents (left) vs end_mount, streamlines orbiting](experiments/06-vent-long-faces/results/streamlines.gif)
+
+*(from experiment 6 - `long_face_vents`, left, is the configuration above;
+`end_mount`, right, is its own baseline. See the full ranking table below
+for how every configuration simulated in this project stacks up.)*
+
+**The catch, and why this isn't simply "the new recommendation":**
+`long_face_vents` inherits its fan position from experiment 4's
+`end_mount` (fan on a short end face) - a mount position experiment 1
+explicitly ruled out for not sitting flush against the real IKEA SAMLA
+tote's moulded short-face depression. It has also never been simulated
+head-to-head against `side_mount` in the same box (they use different
+fan walls entirely), so "beats side_mount's numbers" and "would actually
+beat side_mount if both were compared apples-to-apples on a buildable
+box" aren't quite the same claim yet. Treat this as the strongest result
+the simulations have produced, and `side_mount` as the strongest result
+that's actually buildable today - see "Currently buildable
+recommendation" below.
+
+## Currently buildable recommendation
+
+Of the configurations that don't require solving the short-face fan-mount
+problem: **fan on the long side wall, vents on both short end faces, 15mm
+holes** (experiment 1's original side_mount layout, unchanged by
+experiments 2, 3, and 4). Aligning vents with the fan's jet made things
+worse whether the shared axis was the short one (experiment 2) or the long
+one (experiment 4), enlarging the vents didn't help speed while cutting
+the box's protective internal overpressure by more than half (experiment
+3), and moving the fan to a short end face lost 16% of rod airflow for no
+compensating benefit on its own (experiment 4). Rod orientation
+(experiment 5) also stays unchanged there: rotating the rods to run
+lengthwise raised average rod-surface speed but made evenness worse both
+along each rod and across the box, a worse trade than it looked at first
+glance.
+
+## Full ranking (every configuration simulated, sorted by rod-surface mean speed)
+
+| # | variant | experiment | rod-surface mean | full cross-section mean | uniformity (CV) | rod-surface min | pressure (mean) |
+|---|---|---|---|---|---|---|---|
+| 1 | **long_face_vents** | 6 | **1.01 m/s** | **0.82 m/s** | **0.60** | 0.072 | 17.7 Pa |
+| 2 | long_vents_lengthwise | 7 | 1.01 m/s | 0.74 m/s | 0.70 | 0.046 | 17.7 Pa |
+| 3 | side_mount | 1 | 0.72 m/s | 0.77 m/s | 0.89 | 0.096 | 15.9 Pa |
+| 4 | rods_lengthwise | 5 | 0.69 m/s | 0.45 m/s | 0.82 | 0.036 | 13.9 Pa |
+| 5 | side_bigvent | 3 | 0.68 m/s | 0.78 m/s | 0.88 | 0.092 | 6.3 Pa |
+| 6 | end_mount | 4 | 0.60 m/s | 0.51 m/s | 0.75 | 0.100 | 14.4 Pa |
+| 7 | lid_mount | 1 | 0.56 m/s | 0.69 m/s | 0.97 | 0.093 | 16.7 Pa |
+| 8 | side_aligned | 2 | 0.51 m/s | 0.52 m/s | 0.89 | 0.080 | 16.1 Pa |
+
+Rows 1 and 2 (both from the "vents on long faces" family) are a
+statistical tie on rod-surface mean speed (1.009 vs 1.012 m/s, well
+within this project's noise floor) - see experiment 7 for why stacking
+lengthwise rods on top of the vent relocation doesn't actually help once
+the flow is already forced to spread sideways to reach those vents.
 
 ## Shared setup (once, for any experiment)
 
@@ -101,6 +141,17 @@ comparison GIF.)*
   full-cross-section mean up 60% and more even (CV 0.75 -> 0.60), internal
   overpressure up rather than down. Only the rod-surface minimum gets
   worse (-28%). Same "perpendicular beats aligned" mechanism as
-  experiments 2 and 4, just applied to end_mount's axis - but end_mount
-  itself is still not the recommended layout (see above), so this doesn't
-  change the top pick without a future head-to-head against side_mount.**
+  experiments 2 and 4, just applied to end_mount's axis. The strongest
+  result simulated in this project so far - see "Best result" above for
+  the buildability caveat on why it isn't simply the new top pick.**
+- [`07-long-vents-lengthwise`](experiments/07-long-vents-lengthwise/README.md) -
+  experiment 5's lengthwise rods stacked on top of experiment 6's
+  long-face vents, compared against exp 5's rods_lengthwise baseline.
+  **Finding: still a big win over its own baseline (rod-surface mean up
+  47%, full cross-section up 65%), but stacking the two single-variable
+  wins doesn't beat keeping the rods crosswise - exp 6's long_face_vents
+  still edges it out on full-cross-section mean (0.82 vs 0.74 m/s) and
+  uniformity (0.60 vs 0.70), with the headline rod-surface number a
+  statistical tie between the two. Once the vents are already forced to
+  spread the flow sideways, rod orientation stops being the lever it was
+  in experiment 5.**

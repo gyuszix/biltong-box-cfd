@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Generated/build artifacts - all regenerable from the scripts in each
+# experiment folder, not worth versioning:
+#   stl_out/   <- generate_geometry_v2.py (Blender)
+#   case-*/    <- setup_cfd_cases.py + run_cfd.sh (OpenFOAM mesh + solution,
+#                 ~180MB each - this is the big one)
+stl_out/
+case-*/
+
+# results/ (metrics.csv + comparison PNGs) is intentionally NOT ignored -
+# that's the actual findings, worth keeping in version control.
